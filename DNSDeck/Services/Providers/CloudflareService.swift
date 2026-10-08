@@ -134,7 +134,7 @@ final class CloudflareService {
 
     // MARK: - Internal
 
-    private func request<T: Decodable>(url: URL, method: String, body: Encodable? = nil) async throws -> T {
+    private func request<T: Decodable>(url: URL, method: String, body: Encodable? = nil) async throws -> CFEnvelope<T> {
         guard let token = tokenProvider() else { throw CFAPIError.missingToken }
 
         var req = URLRequest(url: url)
@@ -154,17 +154,16 @@ final class CloudflareService {
             }
             throw CFAPIError.http(http.statusCode)
         }
+        let envelope: CFEnvelope<T>
         do {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            return try decoder.decode(T.self, from: data)
+            envelope = try decoder.decode(CFEnvelope<T>.self, from: data)
         } catch let decodingError {
-            if let responseString = String(data: data, encoding: .utf8) {
-                Logger.general.error("Cloudflare JSON decoding failed. Response: \(responseString)")
-                Logger.general.error("Decoding error: \(decodingError)")
-            }
             throw CFAPIError.decoding(decodingError)
         }
+        guard envelope.success else { throw CFAPIError.cloudflare(envelope.errors) }
+        return envelope
     }
 }
 

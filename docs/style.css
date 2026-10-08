@@ -1,0 +1,7 @@
+/* The square source artwork includes transparent space around the cloud. */
+#navbar .nav-logo,
+#footer .nav-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}

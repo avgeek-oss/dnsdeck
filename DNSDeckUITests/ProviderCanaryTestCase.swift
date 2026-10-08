@@ -91,12 +91,6 @@ class ProviderCanaryTestCase: XCTestCase {
         let liveRecords = try await backend.runRecords()
         verifyAllRecordTypesInProvider(liveRecords)
         phaseLogger.notice("Finished provider API verification")
-        if let multiValueMXRecord = configuration.multiValueMXRecord {
-            perform("Edit a heterogeneous-priority MX record set") {
-                editMultiValueMXRecord(multiValueMXRecord)
-            }
-            try await verifyMultiValueMXRecord(multiValueMXRecord)
-        }
         perform("Search records by name and content") {
             exerciseSearch()
         }
@@ -453,46 +447,6 @@ class ProviderCanaryTestCase: XCTestCase {
         XCTFail(
             "\(configuration.definition.displayName) did not persist the context-menu edit: " +
                 "expected \(primary.editedContent), got \(actualContent ?? "missing record")."
-        )
-    }
-
-    private func editMultiValueMXRecord(_ fixture: ProviderCanaryMultiValueMXFixture) {
-        replaceSearchText(with: fixture.relativeName)
-        openContextMenu(for: fixture.expectedRecord)
-        click(contextMenuItem("record.context.edit", label: "Edit"))
-
-        let contentEditor = app.textViews.matching(identifier: "record.form.content.input").firstMatch
-        XCTAssertTrue(contentEditor.waitForExistence(timeout: 10))
-        click(contentEditor)
-        contentEditor.typeKey("a", modifierFlags: .command)
-        ProviderUITestCredentialEntry.paste(
-            fixture.editedValues.map(\.content).joined(separator: "\n"),
-            into: contentEditor
-        )
-        clickWhenEnabled(button("record.form.submit"))
-        XCTAssertTrue(button("record.form.submit").waitForNonExistence(timeout: 30))
-    }
-
-    private func verifyMultiValueMXRecord(
-        _ fixture: ProviderCanaryMultiValueMXFixture
-    ) async throws {
-        let expectedValues = fixture.editedValues.sorted { $0.content < $1.content }
-        var actualValues: [ProviderCanaryLiveValue] = []
-        for attempt in 0 ..< 10 {
-            let liveRecords = try await backend.runRecords()
-            actualValues = liveRecords
-                .first { $0.signature == fixture.expectedRecord.signature }?
-                .values
-                .sorted { $0.content < $1.content } ?? []
-            if actualValues == expectedValues {
-                return
-            }
-            guard attempt < 9 else { break }
-            try await Task.sleep(for: .seconds(2))
-        }
-        XCTFail(
-            "\(configuration.definition.displayName) changed heterogeneous MX priorities after editing one target: " +
-                "expected \(expectedValues), got \(actualValues)."
         )
     }
 

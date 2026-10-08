@@ -2,8 +2,9 @@
 useDefault = true
 
 [[allowlists]]
-description = "Swift record identity type, not a credential"
+description = "Historical Swift record identity type in the restoration commit, not a credential"
 condition = "AND"
+commits = ["66079e47f6272a47e5afec51c71512abb73c9350"]
 paths = ['''(^|/)DNSDeckUITests/Route53CanaryBackend\.swift$''']
 regexTarget = "secret"
 regexes = ['''^Route53CanaryRecordKey$''']

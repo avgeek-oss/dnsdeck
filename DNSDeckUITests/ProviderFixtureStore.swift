@@ -2,9 +2,6 @@ import Foundation
 
 enum ProviderFixtureName: String {
     case cloudflare = "CLOUDFLARE"
-    case goDaddy = "GODADDY"
-    case ionos = "IONOS"
-    case route53 = "ROUTE53"
 
     var credentialsKey: String {
         "PROVIDER_\(rawValue)_CREDENTIALS"

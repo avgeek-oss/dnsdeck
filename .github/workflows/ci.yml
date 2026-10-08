@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   apple:
-    name: SwiftUI builds and package tests
+    name: SwiftUI builds and offline unit tests
     runs-on: macos-26
     timeout-minutes: 40
     steps:

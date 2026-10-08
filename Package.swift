@@ -23,16 +23,13 @@ let package = Package(
             path: ".",
             exclude: [
                 "AGENTS.md",
+                "Tests",
                 "build",
                 "node_modules",
                 "Config",
                 "docs",
                 "packages",
                 "LICENSE",
-                "NOTICE",
-                "CONTRIBUTING.md",
-                "SECURITY.md",
-                "RESTORATION.md",
                 "package.json",
                 "package-lock.json",
                 "DNSDeck.xcodeproj",
@@ -59,9 +56,7 @@ let package = Package(
                 "DNSDeck/Services/SettingsManager.swift",
                 "DNSDeck/UI",
                 "DNSDeckUITests",
-                "localization-policy.json",
                 "Makefile",
-                "PROVIDER_VERIFICATION.md",
                 "README.md",
                 "scripts",
             ],
@@ -98,6 +93,11 @@ let package = Package(
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ]
+        ),
+        .testTarget(
+            name: "DNSDeckTests",
+            dependencies: ["DNSDeckMCP"],
+            path: "Tests/DNSDeckTests"
         ),
     ],
     swiftLanguageModes: [.v5]

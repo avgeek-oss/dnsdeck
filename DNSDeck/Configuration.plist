@@ -64,13 +64,13 @@
 	<key>Support</key>
 	<dict>
 		<key>emailAddress</key>
-		<string>support@dnsdeck.dev</string>
+		<string>support@avgeek.ltd</string>
 		<key>website</key>
-		<string>https://dnsdeck.dev</string>
+		<string>https://dnsdeck.app</string>
 		<key>mailtoAssistance</key>
-		<string>mailto:support@dnsdeck.dev?subject=I%20need%20assistance%20with%20DNSDeck</string>
+		<string>mailto:support@avgeek.ltd?subject=I%20need%20assistance%20with%20DNSDeck</string>
 		<key>mailtoFeedback</key>
-		<string>mailto:support@dnsdeck.dev?subject=I%20have%20some%20feedback%20for%20DNSDeck</string>
+		<string>mailto:support@avgeek.ltd?subject=I%20have%20some%20feedback%20for%20DNSDeck</string>
 	</dict>
 	<key>ProviderDocumentation</key>
 	<dict>
