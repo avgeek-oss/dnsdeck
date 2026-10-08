@@ -18,12 +18,6 @@ enum ProviderCanaryBackendFactory {
         switch configuration.definition.backendKind {
         case .cloudflare:
             try CloudflareCanaryBackend(configuration: configuration)
-        case .goDaddy:
-            try GoDaddyCanaryBackend(configuration: configuration)
-        case .ionos:
-            try IONOSCanaryBackend(configuration: configuration)
-        case .route53:
-            try Route53CanaryBackend(configuration: configuration)
         }
     }
 }

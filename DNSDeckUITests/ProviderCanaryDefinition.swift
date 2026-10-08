@@ -48,9 +48,6 @@ struct ProviderCanaryCredentialField: Sendable {
 
 enum ProviderCanaryBackendKind: Sendable {
     case cloudflare
-    case goDaddy
-    case ionos
-    case route53
 }
 
 struct ProviderCanaryDefinition: Sendable {
@@ -88,56 +85,6 @@ extension ProviderCanaryDefinition {
         supportsComments: true,
         supportsProxiedRecords: true,
         backendKind: .cloudflare
-    )
-
-    static let route53 = ProviderCanaryDefinition(
-        fixtureName: .route53,
-        providerID: "route53",
-        displayName: "Amazon Route 53",
-        profile: .comprehensive,
-        credentialFields: [
-            ProviderCanaryCredentialField(id: "accessKeyId", kind: .text, isRequired: true),
-            ProviderCanaryCredentialField(id: "secretAccessKey", kind: .secret, isRequired: true),
-        ],
-        importedRecordTypes: [
-            "A", "AAAA", "CAA", "CNAME", "NS", "DS", "HTTPS",
-            "MX", "NAPTR", "PTR", "SRV", "SSHFP", "SVCB", "TLSA",
-        ],
-        importTTL: 120,
-        supportsComments: false,
-        supportsProxiedRecords: false,
-        backendKind: .route53
-    )
-
-    static let goDaddy = ProviderCanaryDefinition(
-        fixtureName: .goDaddy,
-        providerID: "goDaddy",
-        displayName: "GoDaddy",
-        profile: .basic,
-        credentialFields: [
-            ProviderCanaryCredentialField(id: "token", kind: .secret, isRequired: true),
-            ProviderCanaryCredentialField(id: "shopperId", kind: .text, isRequired: false),
-        ],
-        importedRecordTypes: ["A", "AAAA", "CNAME", "MX"],
-        importTTL: 600,
-        supportsComments: false,
-        supportsProxiedRecords: false,
-        backendKind: .goDaddy
-    )
-
-    static let ionos = ProviderCanaryDefinition(
-        fixtureName: .ionos,
-        providerID: "ionos",
-        displayName: "IONOS",
-        profile: .basic,
-        credentialFields: [
-            ProviderCanaryCredentialField(id: "apiKey", kind: .secret, isRequired: true),
-        ],
-        importedRecordTypes: ["A", "AAAA", "CNAME", "MX"],
-        importTTL: 300,
-        supportsComments: false,
-        supportsProxiedRecords: false,
-        backendKind: .ionos
     )
 }
 
@@ -214,29 +161,8 @@ struct ProviderCanaryConfiguration: Sendable {
         definition.importedRecordTypes.map(importedRecord)
     }
 
-    var multiValueMXRecord: ProviderCanaryMultiValueMXFixture? {
-        guard definition.backendKind == .route53 else { return nil }
-        let relativeName = "\(runPrefix)-mx-mixed"
-        return ProviderCanaryMultiValueMXFixture(
-            relativeName: relativeName,
-            fullyQualifiedName: "\(relativeName).\(zoneName)",
-            initialValues: [
-                ProviderCanaryLiveValue(content: "primary.example.com", priority: 10),
-                ProviderCanaryLiveValue(content: "backup.example.com", priority: 20),
-            ],
-            editedValues: [
-                ProviderCanaryLiveValue(content: "primary-edited.example.com", priority: 10),
-                ProviderCanaryLiveValue(content: "backup.example.com", priority: 20),
-            ]
-        )
-    }
-
     var expectedRecords: [ProviderCanaryExpectedRecordFixture] {
-        var expectedRecords = records.map(\.expectedRecord) + importedRecords.map(\.expectedRecord)
-        if let multiValueMXRecord {
-            expectedRecords.append(multiValueMXRecord.expectedRecord)
-        }
-        return expectedRecords
+        records.map(\.expectedRecord) + importedRecords.map(\.expectedRecord)
     }
 
     var expectedRecordTypes: Set<String> {
@@ -251,17 +177,7 @@ struct ProviderCanaryConfiguration: Sendable {
     }
 
     func recordNamePresentedByApp(_ fullyQualifiedName: String) -> String {
-        switch definition.backendKind {
-        case .route53:
-            return fullyQualifiedName.hasSuffix(".") ? fullyQualifiedName : "\(fullyQualifiedName)."
-        case .goDaddy:
-            let zoneSuffix = ".\(zoneName)"
-            return fullyQualifiedName.hasSuffix(zoneSuffix)
-                ? String(fullyQualifiedName.dropLast(zoneSuffix.count))
-                : fullyQualifiedName
-        case .cloudflare, .ionos:
-            return fullyQualifiedName
-        }
+        fullyQualifiedName
     }
 
     private nonisolated static func decodeCredentials(_ json: String) throws -> [String: String] {
@@ -509,21 +425,6 @@ struct ProviderCanaryExpectedRecordFixture: Sendable {
 
     var signature: String {
         "\(type) \(fullyQualifiedName)"
-    }
-}
-
-struct ProviderCanaryMultiValueMXFixture: Sendable {
-    let relativeName: String
-    let fullyQualifiedName: String
-    let initialValues: [ProviderCanaryLiveValue]
-    let editedValues: [ProviderCanaryLiveValue]
-
-    var expectedRecord: ProviderCanaryExpectedRecordFixture {
-        ProviderCanaryExpectedRecordFixture(
-            type: "MX",
-            relativeName: relativeName,
-            fullyQualifiedName: fullyQualifiedName
-        )
     }
 }
 

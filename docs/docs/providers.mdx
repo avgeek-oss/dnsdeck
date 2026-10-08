@@ -1,6 +1,6 @@
 ---
 title: "Providers"
-description: "The 24 DNS providers included in the restored SwiftUI app."
+description: "Supported providers, credential setup, and API capabilities."
 ---
 
 DNSDeck includes Swift implementations for all of these providers:
@@ -21,7 +21,7 @@ DNSDeck includes Swift implementations for all of these providers:
 Choose a provider in the connection form to see its credential fields, setup
 link, and required permissions. These are defined alongside record types,
 zone operations, and TTL rules in the
-[provider catalogue](https://github.com/avgeek-oss/DNSDeck/blob/main/DNSDeck/ProviderDefinitions.json).
+[provider catalogue](https://github.com/avgeek-oss/dnsdeck/blob/main/DNSDeck/ProviderDefinitions.json).
 
 Providers expose different APIs. A provider that supports record editing may
 not support creating zones, changing registrar nameservers, or writing every
@@ -31,13 +31,11 @@ implemented for that provider and protects records it cannot safely rewrite.
 For PowerDNS, use HTTPS for remote endpoints. Loopback HTTP is accepted for
 local development.
 
-## Verification status
+## Testing and API access
 
-These integrations were recovered from the final native SwiftUI version.
-Compilation does not verify current credentials, account eligibility, or
-every provider's live API. The repository retains its
-[historical implementation ledger](https://github.com/avgeek-oss/DNSDeck/blob/main/PROVIDER_VERIFICATION.md)
-and explicit live tests for Cloudflare, GoDaddy, Amazon Route 53, and IONOS.
+All 24 providers have offline unit tests for request handling and record safety.
+Cloudflare has the only opt-in live integration test. Unit tests do not establish
+current compatibility with every live API or your account's eligibility.
 
 When reporting an issue, include the provider, app version, operation, and a
 redacted error. Never include API credentials or private zone exports.

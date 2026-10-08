@@ -10,13 +10,13 @@ description: "Build DNSDeck for your own Mac, iPhone, or iPad."
 - iOS 18.0 or later, or macOS 15.6 or later, to run the app.
 
 All Swift dependencies are included under `packages/`. Building the app does
-not require Node.js, Rust, a server, or access to a private package registry.
+not require Node.js, a server, or access to a private package registry.
 
 ## Clone and build
 
 ```sh
-git clone https://github.com/avgeek-oss/DNSDeck.git
-cd DNSDeck
+git clone https://github.com/avgeek-oss/dnsdeck.git
+cd dnsdeck
 make build-macos
 make build-ios
 ```
@@ -70,9 +70,10 @@ make build-ui-tests
 make format-check
 ```
 
-`make test` runs the bundled Swift package tests. `make build-ui-tests` compiles
-the macOS provider canaries without connecting to providers. Formatting needs
+`make test` runs offline unit tests for all 24 providers and the bundled Swift
+packages. No provider account or domain is needed. `make build-ui-tests` compiles
+the single Cloudflare live-test journey without running it. Formatting needs
 SwiftFormat, available through `brew install swiftformat`.
 
-Real provider tests require dedicated credentials and disposable zones; see
-the [test guide](https://github.com/avgeek-oss/DNSDeck/blob/main/DNSDeckUITests/README.md).
+The optional Cloudflare integration test requires credentials and a disposable zone; see
+the [test guide](https://github.com/avgeek-oss/dnsdeck/blob/main/DNSDeckUITests/README.md).

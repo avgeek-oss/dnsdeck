@@ -2,10 +2,14 @@
   "name": "dnsdeck-docs",
   "private": true,
   "license": "Apache-2.0",
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=24" },
   "scripts": {
-    "docs:dev": "cd docs && mint dev --port 4187",
-    "docs:check": "cd docs && mint validate && mint broken-links"
+    "docs:sync": "oss-docs sync --config docs/site.json --dir docs",
+    "docs:dev": "npm run docs:sync && cd docs && mint dev --port 4187",
+    "docs:check": "oss-docs check --config docs/site.json --dir docs && cd docs && mint validate && mint broken-links"
   },
-  "devDependencies": { "mint": "4.2.992" }
+  "devDependencies": {
+    "@avgeek-oss/docs": "https://codeload.github.com/avgeek-oss/oss-docs/tar.gz/45f6bf8f9763413a705ca0643aac1a7df172e9c2",
+    "mint": "4.2.992"
+  }
 }

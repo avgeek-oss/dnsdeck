@@ -1,0 +1,42 @@
+---
+title: "Data & privacy"
+description: "Where DNSDeck stores credentials and how it connects to your providers."
+---
+
+DNSDeck sends API requests directly from your device to the providers you
+configure. You do not need a DNSDeck account or a hosted DNSDeck backend.
+
+## Provider credentials
+
+The app stores provider credentials in Apple Keychain, scoped to the
+environment you selected. The current implementation does not enable iCloud
+Keychain synchronization. Configure credentials on each device you use.
+
+Use the narrowest permissions needed for your work. Revoke exposed or unused
+credentials in your provider's console.
+
+You can inspect the
+[Keychain implementation](https://github.com/avgeek-oss/dnsdeck/blob/main/DNSDeck/Services/KeychainTokenStore.swift)
+and the
+[provider credential store](https://github.com/avgeek-oss/dnsdeck/blob/main/DNSDeck/Services/ProviderCredentialStore.swift).
+
+## Local data
+
+Environment settings and cached DNS data are stored locally. Exports,
+screenshots, and diagnostic logs can contain domain or account information;
+review them before sharing. App locking helps control access to the app's
+interface, but it is not a substitute for securing your device.
+
+## Local MCP access
+
+The macOS app includes a local MCP companion that can use your environments
+and credentials. Only connect it to clients you trust with DNS access. The
+companion's access is separate from the SwiftUI app's lock screen.
+
+## Reporting a problem
+
+Report bugs and share feedback through
+[GitHub Issues](https://github.com/avgeek-oss/dnsdeck/issues).
+Include the app version and steps to reproduce. Never post credentials,
+private account data, or zone exports. We accept reports and feedback, not
+external code contributions.

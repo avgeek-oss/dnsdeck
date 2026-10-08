@@ -1,39 +1,66 @@
 ---
-title: "DNSDeck"
-description: "Manage DNS from a native app on iPhone, iPad, and Mac."
+title: "DNSDeck — DNS for iPhone, iPad, and Mac"
+description: "Manage zones and records across 24 DNS providers in a native SwiftUI app. Inspect the source and build your own copy."
+mode: "custom"
 ---
 
-DNSDeck brings 24 DNS providers into one SwiftUI app. Connect your accounts,
-browse zones, edit records, and use bulk import and export while keeping your
-API credentials in Apple Keychain.
+import { Home, Hero, Actions, ActionLink, Highlights, InlineLink, Process, SectionIntro, Eyebrow, SplitSection, Points } from '/snippets/oss/homepage.jsx';
 
-<CardGroup cols={2}>
-  <Card title="Build your own copy" icon="hammer" href="/build-from-source">
-    Clone the source, choose your signing details, and build with Xcode.
-  </Card>
-  <Card title="Connect a provider" icon="globe" href="/getting-started">
-    Add an account and find your first DNS zone.
-  </Card>
-</CardGroup>
+<Home>
+  <Hero id="dnsdeck-heading">
+    <img src="/assets/logo.png" alt="" width="112" height="112" />
+    <h1 id="dnsdeck-heading">Your DNS.<br /><span>On your devices.</span></h1>
+    <p className="oss-lead">
+      <span>Manage zones and records across 24 providers.</span>
+      <span>A native app for iPhone, iPad, and Mac.</span>
+    </p>
+    <Actions>
+      <ActionLink href="/docs/build-from-source">Build your copy</ActionLink>
+      <ActionLink href="/docs/introduction" variant="secondary">Read the docs</ActionLink>
+    </Actions>
+  </Hero>
 
-## App Store or source
+  <Highlights aria-label="What DNSDeck does">
+    <div>
+      <h2>One place for your providers</h2>
+      <p>Connect multiple accounts and organize them into environments. Switch between zones without switching provider consoles.</p>
+      <InlineLink href="/docs/providers">See all 24 providers →</InlineLink>
+    </div>
+    <div>
+      <h2>Built for everyday DNS work</h2>
+      <p>Search and edit records, import CSV or BIND zone files, export a copy, and apply bulk changes.</p>
+      <InlineLink href="/docs/getting-started">Connect your first account →</InlineLink>
+    </div>
+    <div>
+      <h2>Credentials in your Keychain</h2>
+      <p>DNSDeck sends requests directly to your providers. No DNSDeck account or hosted backend sits in between.</p>
+      <InlineLink href="/docs/privacy">Understand your data →</InlineLink>
+    </div>
+  </Highlights>
 
-DNSDeck is being prepared for a return to the App Store as a paid app for people
-who prefer a ready-to-use download. The restored release is not yet announced
-as available. In the meantime, you can build your own copy from the public
-[GitHub repository](https://github.com/avgeek-oss/DNSDeck).
+  <Process id="get-going">
+    <SectionIntro>
+      <Eyebrow>Get started</Eyebrow>
+      <h2 id="get-going">From account to record.</h2>
+      <p>Build your own copy, connect a provider, and choose the zone you want to manage.</p>
+    </SectionIntro>
+    <ol>
+      <li><span>01</span><h3>Build on your Mac</h3><p>Clone the repository and open it in Xcode. Use your own signing details to run it on your devices.</p></li>
+      <li><span>02</span><h3>Connect a provider</h3><p>Create an environment and enter your provider credentials. The connection form explains the required fields.</p></li>
+      <li><span>03</span><h3>Work with your records</h3><p>Choose a zone to browse its records. Available actions and record types follow that provider's capabilities.</p></li>
+    </ol>
+  </Process>
 
-The source is licensed under Apache-2.0. Building DNSDeck requires a Mac and
-Xcode; running it requires iOS 18.0 or macOS 15.6 or later. There is no server
-to deploy or DNSDeck account to create.
-
-## What it includes
-
-- Multiple provider accounts and environments.
-- DNS record creation, editing, and deletion with provider-specific controls.
-- CSV and BIND zone import, CSV export, and bulk record workflows.
-- Native navigation, appearance settings, localization, and app locking.
-- A local MCP companion on macOS for compatible clients.
-
-Available operations depend on the provider. Read [Providers](/providers) for
-the supported list and setup guidance.
+  <SplitSection id="source-heading">
+    <SectionIntro>
+      <Eyebrow>Open source</Eyebrow>
+      <h2 id="source-heading">See what runs on your device.</h2>
+      <p>DNS credentials deserve scrutiny. The Swift source, provider clients, and credential storage are public for you to inspect.</p>
+      <InlineLink href="https://github.com/avgeek-oss/dnsdeck">Read the source on GitHub →</InlineLink>
+    </SectionIntro>
+    <Points>
+      <div><h3>Your own build</h3><p>Clone and modify DNSDeck under Apache-2.0. The repository includes the Swift dependencies needed to build it.</p></div>
+      <div><h3>Maintained by Avgeek</h3><p>We welcome feedback and bug reports. We do not accept external contributions or pull requests.</p></div>
+    </Points>
+  </SplitSection>
+</Home>

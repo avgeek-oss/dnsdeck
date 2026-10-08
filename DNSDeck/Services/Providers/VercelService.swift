@@ -154,10 +154,6 @@ final class VercelService {
             let decoder = JSONDecoder()
             return try decoder.decode(T.self, from: data)
         } catch let decodingError {
-            if let responseString = String(data: data, encoding: .utf8) {
-                Logger.general.error("Vercel JSON decoding failed. Response: \(responseString)")
-                Logger.general.error("Decoding error: \(decodingError)")
-            }
             throw VercelServiceError.decoding(decodingError)
         }
     }

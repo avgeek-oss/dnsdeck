@@ -2,7 +2,7 @@
   "configurations" : [
     {
       "id" : "4E556988-331E-46A4-BEA7-075988677E16",
-      "name" : "Mandatory Provider Canaries",
+      "name" : "Cloudflare Live Integration",
       "options" : {
 
       }

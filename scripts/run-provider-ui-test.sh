@@ -10,12 +10,8 @@ fi
 test_class="$1"
 provider_name="$2"
 
-if [[ ! "$test_class" =~ ^[A-Za-z0-9_]+$ ]]; then
-  echo "Invalid UI-test class: $test_class" >&2
-  exit 64
-fi
-if [[ ! "$provider_name" =~ ^[A-Z0-9_]+$ ]]; then
-  echo "Invalid UI-test provider name: $provider_name" >&2
+if [[ "$test_class" != "CloudflareProviderUITests" || "$provider_name" != "CLOUDFLARE" ]]; then
+  echo "Cloudflare is the only supported live integration test." >&2
   exit 64
 fi
 

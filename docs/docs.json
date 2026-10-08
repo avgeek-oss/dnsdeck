@@ -1,21 +1,164 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
+  "appearance": {
+    "default": "system"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs",
+    "codeblocks": "system"
+  },
+  "interaction": {
+    "drilldown": false
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude"]
+  },
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "og:type": "website",
+      "twitter:card": "summary_large_image",
+      "canonical": "https://dnsdeck.app"
+    }
+  },
   "name": "DNSDeck",
-  "description": "A native SwiftUI DNS client for iPhone, iPad, and Mac.",
-  "colors": { "primary": "#1E4BA4", "light": "#82A7ED", "dark": "#1E4BA4" },
-  "appearance": { "default": "system" },
+  "description": "A native DNS client for iPhone, iPad, and Mac. Manage 24 providers with credentials stored in Apple Keychain.",
+  "logo": {
+    "light": "/assets/logo.png",
+    "dark": "/assets/logo.png",
+    "href": "/"
+  },
+  "favicon": "/assets/logo.png",
+  "colors": {
+    "primary": "#1E4BA4",
+    "light": "#82A7ED",
+    "dark": "#1E4BA4"
+  },
   "navigation": {
-    "groups": [
+    "dropdowns": [
       {
-        "group": "DNSDeck",
-        "pages": ["index", "getting-started", "build-from-source", "providers", "security"]
+        "dropdown": "Using DNSDeck",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": ["docs/introduction", "docs/getting-started"]
+          },
+          {
+            "group": "DNS management",
+            "pages": ["docs/providers"]
+          }
+        ]
+      },
+      {
+        "dropdown": "Build & privacy",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "Your own copy",
+            "pages": ["docs/build-from-source"]
+          },
+          {
+            "group": "Your data",
+            "pages": ["docs/privacy"]
+          }
+        ]
       }
     ]
   },
   "navbar": {
-    "links": [{ "label": "GitHub", "href": "https://github.com/avgeek-oss/DNSDeck" }],
-    "primary": { "type": "button", "label": "Build DNSDeck", "href": "/build-from-source" }
+    "primary": {
+      "type": "button",
+      "label": "Docs",
+      "href": "/docs/introduction"
+    }
   },
-  "footer": { "socials": { "github": "https://github.com/avgeek-oss/DNSDeck" } }
+  "footer": {
+    "links": [
+      {
+        "header": "Documentation",
+        "items": [
+          {
+            "label": "Get started",
+            "href": "/docs/getting-started"
+          },
+          {
+            "label": "Supported providers",
+            "href": "/docs/providers"
+          },
+          {
+            "label": "Build your own copy",
+            "href": "/docs/build-from-source"
+          },
+          {
+            "label": "Data & privacy",
+            "href": "/docs/privacy"
+          }
+        ]
+      },
+      {
+        "header": "Our OSS Philosophy",
+        "items": [
+          {
+            "label": "Why we publish our code",
+            "href": "https://github.com/avgeek-oss/.github/blob/main/profile/README.md"
+          },
+          {
+            "label": "DNSDeck source",
+            "href": "https://github.com/avgeek-oss/dnsdeck"
+          },
+          {
+            "label": "Report an issue",
+            "href": "https://github.com/avgeek-oss/dnsdeck/issues"
+          },
+          {
+            "label": "Apache-2.0 license",
+            "href": "https://github.com/avgeek-oss/dnsdeck/blob/main/LICENSE"
+          }
+        ]
+      },
+      {
+        "header": "Other OSS Apps",
+        "items": [
+          {
+            "label": "Towbar · Deploy your apps",
+            "href": "https://github.com/avgeek-oss/towbar"
+          },
+          {
+            "label": "Vitalog · Keep your health ledger",
+            "href": "https://github.com/avgeek-oss/vitalog"
+          },
+          {
+            "label": "All OSS projects",
+            "href": "https://github.com/avgeek-oss/.github/blob/main/profile/README.md#whats-in-the-list"
+          }
+        ]
+      }
+    ],
+    "socials": {
+      "github": "https://github.com/avgeek-oss/dnsdeck"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/getting-started",
+      "destination": "/docs/getting-started"
+    },
+    {
+      "source": "/build-from-source",
+      "destination": "/docs/build-from-source"
+    },
+    {
+      "source": "/providers",
+      "destination": "/docs/providers"
+    },
+    {
+      "source": "/security",
+      "destination": "/docs/privacy"
+    }
+  ]
 }

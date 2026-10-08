@@ -230,93 +230,52 @@ final class GoogleCloudService {
 
     private func extractPKCS1FromPKCS8(_ pkcs8Data: Data) throws -> Data {
         let bytes = [UInt8](pkcs8Data)
-
-        guard bytes.count > 26 else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Private key data too short"]
-            ))
-        }
-
         var index = 0
+        let sequence = try derValue(tag: 0x30, bytes: bytes, index: &index)
+        guard index == bytes.count else { throw invalidPrivateKey() }
 
-        guard bytes[index] == 0x30 else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid PKCS#8: missing outer SEQUENCE"]
-            ))
-        }
-        index += 1
-        index = try skipLength(bytes: bytes, index: index)
-
-        guard bytes[index] == 0x02 else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid PKCS#8: missing version INTEGER"]
-            ))
-        }
-        index += 1
-        let versionLength = Int(bytes[index])
-        index += 1 + versionLength
-
-        guard bytes[index] == 0x30 else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid PKCS#8: missing algorithm SEQUENCE"]
-            ))
-        }
-        index += 1
-        let algLength = Int(bytes[index])
-        index += 1 + algLength
-
-        guard bytes[index] == 0x04 else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid PKCS#8: missing OCTET STRING"]
-            ))
-        }
-        index += 1
-
-        let (contentLength, bytesConsumed) = try parseLength(bytes: bytes, index: index)
-        index += bytesConsumed
-
-        guard index + contentLength <= bytes.count else {
-            throw GCPAPIError.jwt(NSError(
-                domain: "GCPAPI",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid PKCS#8: truncated data"]
-            ))
-        }
-
-        return Data(bytes[index ..< (index + contentLength)])
+        var fieldIndex = 0
+        let version = try derValue(tag: 0x02, bytes: sequence, index: &fieldIndex)
+        guard version == [0] else { throw invalidPrivateKey() }
+        _ = try derValue(tag: 0x30, bytes: sequence, index: &fieldIndex)
+        return try Data(derValue(tag: 0x04, bytes: sequence, index: &fieldIndex))
     }
 
-    private func skipLength(bytes: [UInt8], index: Int) throws -> Int {
-        let idx = index
-        if bytes[idx] & 0x80 == 0 {
-            return idx + 1
-        } else {
-            let numBytes = Int(bytes[idx] & 0x7F)
-            return idx + 1 + numBytes
-        }
-    }
+    private func derValue(tag: UInt8, bytes: [UInt8], index: inout Int) throws -> [UInt8] {
+        guard index < bytes.count, bytes[index] == tag else { throw invalidPrivateKey() }
+        index += 1
+        guard index < bytes.count else { throw invalidPrivateKey() }
 
-    private func parseLength(bytes: [UInt8], index: Int) throws -> (length: Int, bytesConsumed: Int) {
-        if bytes[index] & 0x80 == 0 {
-            return (Int(bytes[index]), 1)
+        let firstLength = bytes[index]
+        index += 1
+        let length: Int
+        if firstLength & 0x80 == 0 {
+            length = Int(firstLength)
         } else {
-            let numLengthBytes = Int(bytes[index] & 0x7F)
-            var length = 0
-            for i in 0 ..< numLengthBytes {
-                length = (length << 8) | Int(bytes[index + 1 + i])
+            let count = Int(firstLength & 0x7F)
+            guard count > 0, count < MemoryLayout<Int>.size, count <= bytes.count - index else {
+                throw invalidPrivateKey()
             }
-            return (length, 1 + numLengthBytes)
+            var decoded = 0
+            for _ in 0 ..< count {
+                decoded = (decoded << 8) | Int(bytes[index])
+                index += 1
+            }
+            length = decoded
         }
+
+        guard length <= bytes.count - index else { throw invalidPrivateKey() }
+        let value = Array(bytes[index ..< index + length])
+        index += length
+        return value
+    }
+
+    private func invalidPrivateKey() -> GCPAPIError {
+        .jwt(NSError(
+            domain: "GCPAPI",
+            code: -1,
+            userInfo: [NSLocalizedDescriptionKey: "Invalid or truncated PKCS#8 private key"]
+        ))
     }
 
     private func createAuthenticatedRequest(url: URL, method: String = "GET") async throws -> URLRequest {
