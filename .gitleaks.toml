@@ -1,0 +1,16 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Swift record identity type, not a credential"
+condition = "AND"
+paths = ['''(^|/)DNSDeckUITests/Route53CanaryBackend\.swift$''']
+regexTarget = "secret"
+regexes = ['''^Route53CanaryRecordKey$''']
+
+[[allowlists]]
+description = "Public Keychain field identifier in provider metadata"
+condition = "AND"
+paths = ['''(^|/)DNSDeck/ProviderDefinitions\.json$''']
+regexTarget = "secret"
+regexes = ['''^ibmNS1\.apiKey$''']

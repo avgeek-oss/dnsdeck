@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "4E556988-331E-46A4-BEA7-075988677E16",
+      "name" : "Mandatory Provider Canaries",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:DNSDeck.xcodeproj",
+      "identifier" : "AC61C2872E9BD3CD00CBE016",
+      "name" : "DNSDeck macOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:DNSDeck.xcodeproj",
+        "identifier" : "CC10A1B12F0E000000000006",
+        "name" : "DNSDeckUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

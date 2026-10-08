@@ -1,0 +1,31 @@
+---
+title: "Security and privacy"
+description: "How DNSDeck handles credentials and DNS data."
+---
+
+DNSDeck connects directly from your device to the DNS providers you configure.
+It does not require a hosted DNSDeck backend or an Avgeek account.
+
+## Credentials
+
+Provider credentials are stored in Apple Keychain. Use the narrowest provider
+permissions needed for your work. If a credential is exposed, revoke it in the
+provider's console and create a replacement.
+
+Account configuration and cached DNS data are stored locally. Exported record
+files, screenshots, and diagnostic logs may reveal domain information, so
+review them before sharing.
+
+## App access
+
+DNSDeck includes app locking and platform authentication controls. The local
+macOS MCP companion can access the app's environments and credentials, so
+only configure it in trusted clients. Review a client's proposed DNS changes
+before approving them.
+
+## Report a vulnerability
+
+Send security reports privately to [support@dnsdeck.dev](mailto:support@dnsdeck.dev).
+Provide reproduction steps and the affected version, with credentials and
+private account data removed. General bugs can be reported in
+[GitHub Issues](https://github.com/avgeek-oss/DNSDeck/issues).

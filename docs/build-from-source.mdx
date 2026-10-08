@@ -1,0 +1,78 @@
+---
+title: "Build from source"
+description: "Build DNSDeck for your own Mac, iPhone, or iPad."
+---
+
+## Requirements
+
+- A Mac with Xcode 26 or newer selected in Xcode's command-line tools settings.
+- The iOS platform support installed in Xcode for simulator or device builds.
+- iOS 18.0 or later, or macOS 15.6 or later, to run the app.
+
+All Swift dependencies are included under `packages/`. Building the app does
+not require Node.js, Rust, a server, or access to a private package registry.
+
+## Clone and build
+
+```sh
+git clone https://github.com/avgeek-oss/DNSDeck.git
+cd DNSDeck
+make build-macos
+make build-ios
+```
+
+Both commands build Release configurations with signing disabled. The macOS
+application is at `build/macOS/Build/Products/Release/DNSDeck.app`. The iOS
+simulator application is at
+`build/iOS/Build/Products/Release-iphonesimulator/DNSDeck iOS.app`.
+
+For an unsigned device compilation, run `make build-ios-device`. An unsigned
+build proves compilation; installing on a physical iPhone or distributing the
+app requires signing.
+
+## Sign your own copy
+
+```sh
+cp Config/Signing.local.xcconfig.example Config/Signing.local.xcconfig
+open DNSDeck.xcodeproj
+```
+
+Edit the local file:
+
+```ini
+DNSDECK_BUNDLE_IDENTIFIER = com.yourname.DNSDeck
+DNSDECK_DEVELOPMENT_TEAM = YOURTEAMID
+```
+
+Use your own unique bundle identifier and the team shown in Xcode's account
+settings. The local file is ignored by Git and applies to both app targets and
+the UI-test target. The committed identifier is reserved for the official app.
+
+In Xcode, choose **DNSDeck iOS** or **DNSDeck macOS**, select your device, and
+run. Xcode manages signing automatically. For personal device builds, any
+account limits and provisioning requirements shown by Xcode still apply.
+
+The `make` build commands remain unsigned by default. For signed command-line
+builds, pass `XCODE_FLAGS=` after configuring the local signing file.
+
+## Local MCP companion
+
+The macOS build includes `DNSDeckMCP` inside the app bundle. You can build it
+separately with `make build-mcp`. It communicates over standard input/output
+and uses the app's local environments and credential store. Only connect it
+to clients you trust with DNS access.
+
+## Checks
+
+```sh
+make test
+make build-ui-tests
+make format-check
+```
+
+`make test` runs the bundled Swift package tests. `make build-ui-tests` compiles
+the macOS provider canaries without connecting to providers. Formatting needs
+SwiftFormat, available through `brew install swiftformat`.
+
+Real provider tests require dedicated credentials and disposable zones; see
+the [test guide](https://github.com/avgeek-oss/DNSDeck/blob/main/DNSDeckUITests/README.md).

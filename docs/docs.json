@@ -1,0 +1,21 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "DNSDeck",
+  "description": "A native SwiftUI DNS client for iPhone, iPad, and Mac.",
+  "colors": { "primary": "#1E4BA4", "light": "#82A7ED", "dark": "#1E4BA4" },
+  "appearance": { "default": "system" },
+  "navigation": {
+    "groups": [
+      {
+        "group": "DNSDeck",
+        "pages": ["index", "getting-started", "build-from-source", "providers", "security"]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [{ "label": "GitHub", "href": "https://github.com/avgeek-oss/DNSDeck" }],
+    "primary": { "type": "button", "label": "Build DNSDeck", "href": "/build-from-source" }
+  },
+  "footer": { "socials": { "github": "https://github.com/avgeek-oss/DNSDeck" } }
+}

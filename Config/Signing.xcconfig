@@ -1,0 +1,5 @@
+// Keep the original identifier for the official App Store app.
+// Override these values in the ignored Signing.local.xcconfig for personal builds.
+DNSDECK_BUNDLE_IDENTIFIER = dev.dnsdeck.DNSDeck
+DNSDECK_DEVELOPMENT_TEAM =
+#include? "Signing.local.xcconfig"

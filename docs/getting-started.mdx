@@ -1,0 +1,43 @@
+---
+title: "Get started"
+description: "Connect a provider and manage your first zone."
+---
+
+Install your [own build](/build-from-source), or use the official App Store
+release once the restored version is available.
+
+## Connect an account
+
+1. Open DNSDeck and create an environment with a recognizable name.
+2. Open the provider settings, choose that environment, and select **Connect**
+   beside your provider.
+3. Follow the provider's setup link, enter the requested credentials, and connect.
+4. Return to the environment and select a zone to load its records.
+
+Some providers require additional account, project, tenant, or region details.
+The connection form explains the fields and permissions for that provider.
+Start with read permissions if you only want to browse; add write permissions
+when you need to make changes.
+
+## Work with records
+
+Select a zone to browse and search its records. Use the add or edit actions to
+change records. The form adapts to the record type and the provider's TTL and
+feature support. Cloudflare proxy settings, for example, appear only where
+supported.
+
+You can also import CSV or BIND zone text, export records, and apply bulk
+actions. Review the proposed records before importing and inspect the results
+for rejected entries. Keep an export before a large change.
+
+<Warning>
+  Changes are sent directly to your DNS provider and can affect live services.
+  Use a test zone while learning the app.
+</Warning>
+
+## Connection problems
+
+Check the account or project identifier, token permissions, and provider API
+access requirements. Some registrars restrict API access by account eligibility
+or source IP. The provider's own console remains the place to enable API access
+or revoke credentials.

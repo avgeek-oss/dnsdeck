@@ -1,0 +1,11 @@
+{
+  "name": "dnsdeck-docs",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "docs:dev": "cd docs && mint dev --port 4187",
+    "docs:check": "cd docs && mint validate && mint broken-links"
+  },
+  "devDependencies": { "mint": "4.2.992" }
+}
